@@ -1,5 +1,8 @@
-import React from 'react';
-import { StyleSheet, Button, View } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, Platform, AppRegistry, Button } from 'react-native';
+import { Constants, Location, Permissions } from 'expo';
+import { MapView } from 'expo';
+
 
 export default class App extends React.Component {
 

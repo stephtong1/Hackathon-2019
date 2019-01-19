@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Platform, AppRegistry, Button } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
-import { MapView } from 'expo';
+import { MapView, SQLite } from 'expo';
 
+const db = SQLite.openDatabase('db.db');
 
 export default class App extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = {currentColor: "#841584"};
+    this.state = {
+      location: null,
+      currentColor: "#841584"
+    };
   }
 
   componentWillMount() {
@@ -22,7 +26,12 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    // setInterval(() => { this._getLocationAsync(); }, 1000)
+    db.transaction(tx => {
+      tx.executeSql(
+        'create table if not exists items (id integer primary key not null, time BIGINT, longitude REAL, latitude REAL);'
+        //'drop table items'
+      );
+    });
   }
 
   _getLocationAsync = async () => {
@@ -81,7 +90,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#99ccff',
     alignItems: 'center',
     justifyContent: 'center',
   },

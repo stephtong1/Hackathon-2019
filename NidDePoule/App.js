@@ -199,7 +199,7 @@ export default class App extends React.Component {
             this._getLocationAsync(6)
             this.saveLocation()
           }}
-          title="Nid de 🐔"
+          title="Nid de Poule 🐔"
           color={this.state.currentColor}
         />
         <Button onPress={() => {

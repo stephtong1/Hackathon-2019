@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Platform, AppRegistry, Button } from 'react-native';
-import { Constants, Location, Permissions, Google } from 'expo';
-import MapView from 'react-native-maps';
-import { Constants, Location, Permissions } from 'expo';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { Location, Permissions, MapView } from 'expo';
 import { SQLite } from 'expo';
 
 const db = SQLite.openDatabase('db.db');
@@ -47,7 +45,6 @@ export default class App extends React.Component {
     this.setState(() => {
       return { location: locationFetch };
     });
-
   }
 
   setRandomColor = () => {
@@ -80,6 +77,24 @@ export default class App extends React.Component {
       />)
   }
 
+  saveLocation = () => {
+    db.transaction(
+      tx => {
+        tx.executeSql('insert into items (time, longitude, latitude) values (?, ?, ?)', 
+        [
+          this.state.location.timestamp,
+          this.state.location.coords.latitude,
+          this.state.location.coords.longitude
+        ]);
+        tx.executeSql('select * from items', [], (_, { rows }) =>
+          console.log(JSON.stringify(rows))
+        );
+      },
+      null,
+      this.update
+    );
+  }
+
   render() {
     let text = 'Waiting..';
     let longlong = 0;
@@ -87,6 +102,7 @@ export default class App extends React.Component {
 
     if (this.state.location) {
       text = JSON.stringify({
+        time: this.state.location.timestamp,
         latitude: this.state.location.coords.latitude,
         longitude: this.state.location.coords.longitude
       },
@@ -125,6 +141,7 @@ export default class App extends React.Component {
           onPress={() => {
             this.setRandomColor();
             this._getLocationAsync(6);
+            this.saveLocation();
           }}
           title="Change color"
           color={this.state.currentColor}
@@ -137,7 +154,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative'
+    position: 'relative',
+    backgroundColor: '#99ccff'
   },
   paragraph: {
     margin: 24,

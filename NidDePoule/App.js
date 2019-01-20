@@ -64,20 +64,48 @@ export default class App extends React.Component {
 
   pinMarker(latitude, longitude) {
     return (
-      <MapView.Marker
-        coordinate={{
-          latitude: latitude,
-          longitude: longitude
-        }}
-        title="This is a title"
-        description="This is a description"
-      />
+      <View>
+        <MapView.Marker
+          coordinate={{
+            latitude: latitude,
+            longitude: longitude
+          }}
+          title="This is a title"
+          description="This is a description"
+        />
+        <MapView.Marker
+          coordinate={{
+            latitude: 45.513320,
+            longitude: -73.601810
+          }}
+          title="This is a title"
+          description="This is a description"
+        />
+        <MapView.Marker
+          coordinate={{
+            latitude: 45.508041,
+            longitude: -73.618131
+          }}
+          title="This is a title"
+          description="This is a description"
+        />
+        <MapView.Marker
+          coordinate={{
+            latitude: 45.505168,
+            longitude: -73.610619
+          }}
+          title="This is a title"
+          description="This is a description"
+        />
+
+      </View>
+
     )
   }
 
   clearLocalData = () => {
     db.transaction(tx => {
-         tx.executeSql(
+      tx.executeSql(
         'drop table items;'
         //'drop table items'
       )
@@ -85,7 +113,7 @@ export default class App extends React.Component {
         'create table if not exists items (id integer primary key not null, time BIGINT, longitude REAL, latitude REAL);'
         //'drop table items'
       )
-   
+
     })
   }
 
@@ -132,7 +160,10 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.paragraph}>{text}</Text>
+        <Text style={styles.paragraph}>
+          My location: {"\n"}
+          Latitude: {this.state.location.coords.latitude + "\n"}
+          Longitude: {this.state.location.coords.longitude}</Text>
         <MapView
           style={{ flex: 1 }}
           ref={mapView => {
@@ -173,8 +204,8 @@ export default class App extends React.Component {
         />
         <Button onPress={() => {
           this.clearLocalData();
-        }} 
-        title="Clear" />
+        }}
+          title="Clear" />
       </View>
     )
   }

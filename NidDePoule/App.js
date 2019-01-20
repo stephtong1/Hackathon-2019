@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, View, Dimensions, Button } from 'react-native';
-import { Camera, Permissions } from 'expo';
+import { Camera, Permissions, MediaLibrary } from 'expo';
 
 class JustifyContentBasics extends Component {
   render() {
@@ -54,10 +54,13 @@ export default class UseCamera extends React.Component{
     return [numerator/gcd, denominator/gcd];
   }
 
-  takePicture = () => {
+  takePicture = async() => {
     if (this.camera) {
-      let photo = this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved });
+      let photo = await this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved });
       console.log(photo);
+      console.log(photo.uri);
+      const asset = await MediaLibrary.createAssetAsync(photo.uri);
+      console.log(asset);
     }
   };
 

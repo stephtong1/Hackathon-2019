@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Dimensions } from 'react-native';
+import { AppRegistry, View, Dimensions, Button } from 'react-native';
 import { Camera, Permissions } from 'expo';
 
 class JustifyContentBasics extends Component {
@@ -66,14 +66,21 @@ export default class UseCamera extends React.Component{
       return <Text>No access to camera</Text>;
     } else {
       return (
-        <View style={{flex:1, flexDirection:'row', justifyContent:'center'}}>
-          <Camera style={{flex:1}} type={this.state.type} ratio={this.state.ratio}>
+        <View style={{flex:1, flexDirection:'row', justifyContent:'center',}}>
+          <Camera style={{flex:1}} type={this.state.type} ratio={this.state.ratio} ref={ref => { this.camera = ref; }}  >
+            <Button 
+              style={{flex:1 , flexDirection: 'column', justifyContent: 'flex-end',}}
+              onPress={() => {
+                snap = async () => {
+                  if (this.camera) {
+                    this.camera.takePictureAsync().then(data => console.log(data))
+                  }
+                };
+              }} 
+              title="Clear" 
+              color="#841584"
+            />
           </Camera>
-          <Button onPress={() => {
-            this.clearLocalData();
-            }} 
-            title="Clear" 
-          />
         </View>
       );
     }

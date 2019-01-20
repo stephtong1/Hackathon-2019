@@ -68,18 +68,19 @@ export default class UseCamera extends React.Component{
       return (
         <View style={{flex:1, flexDirection:'row', justifyContent:'center',}}>
           <Camera style={{flex:1}} type={this.state.type} ratio={this.state.ratio} ref={ref => { this.camera = ref; }}  >
-            <Button 
-              style={{flex:1 , flexDirection: 'column', justifyContent: 'flex-end',}}
-              onPress={() => {
-                snap = async () => {
-                  if (this.camera) {
-                    this.camera.takePictureAsync().then(data => console.log(data))
-                  }
-                };
-              }} 
-              title="Clear" 
-              color="#841584"
-            />
+            <View style={{flex:1 , flexDirection: 'column', justifyContent: 'flex-end',}}>
+              <Button 
+                onPress={() => {
+                  snap = async () => {
+                    if (this.camera) {
+                      this.camera.takePictureAsync().then(data => console.log(data))
+                    }
+                  };
+                }} 
+                title="Snap!" 
+                color="#841584"
+              />
+            </View>
           </Camera>
         </View>
       );

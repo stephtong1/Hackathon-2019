@@ -69,6 +69,11 @@ export default class UseCamera extends React.Component{
         <View style={{flex:1, flexDirection:'row', justifyContent:'center'}}>
           <Camera style={{flex:1}} type={this.state.type} ratio={this.state.ratio}>
           </Camera>
+          <Button onPress={() => {
+            this.clearLocalData();
+            }} 
+            title="Clear" 
+          />
         </View>
       );
     }

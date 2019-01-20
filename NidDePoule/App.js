@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Platform, AppRegistry, Button } from 'react-native';
 import { Constants, Location, Permissions, Google } from 'expo';
 import MapView from 'react-native-maps';
+import { Constants, Location, Permissions } from 'expo';
+import { SQLite } from 'expo';
 
+const db = SQLite.openDatabase('db.db');
 
 export default class App extends React.Component {
 
@@ -17,8 +20,6 @@ export default class App extends React.Component {
         }
       }
     };
-    this._getLocationAsync();
-    console.log("#######" + this.state.location.coords.latitude + "#########")
   }
 
   componentWillMount() {
@@ -26,7 +27,12 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    // setInterval(() => { this._getLocationAsync(); }, 1000)
+    db.transaction(tx => {
+      tx.executeSql(
+        'create table if not exists items (id integer primary key not null, time BIGINT, longitude REAL, latitude REAL);'
+        //'drop table items'
+      );
+    });
   }
 
   _getLocationAsync = async () => {

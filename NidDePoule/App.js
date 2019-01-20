@@ -54,6 +54,14 @@ export default class UseCamera extends React.Component{
     return [numerator/gcd, denominator/gcd];
   }
 
+  takePicture = () => {
+    if (this.camera) {
+      let photo = this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved });
+      console.log(photo);
+    }
+  };
+
+
   render(){
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
@@ -70,14 +78,10 @@ export default class UseCamera extends React.Component{
           <Camera style={{flex:1}} type={this.state.type} ratio={this.state.ratio} ref={ref => { this.camera = ref; }}  >
             <View style={{flex:1 , flexDirection: 'column', justifyContent: 'flex-end',}}>
               <Button 
-                onPress={() => {
-                  snap = async () => {
-                    if (this.camera) {
-                      this.camera.takePictureAsync().then(data => console.log(data))
+                onPress={
+                  this.takePicture
                     }
-                  };
-                }} 
-                title="Snap!" 
+                title="Snap!"
                 color="#841584"
               />
             </View>
